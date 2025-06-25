@@ -6,7 +6,9 @@ import numpy
 
 from curses import wrapper
 
-def main(stdscr):
+def main():
+    print("START")
+    stdscr = curses.initscr()
     # Clear screen
     stdscr.clear()
 
@@ -14,15 +16,46 @@ def main(stdscr):
     curses.noecho()
 
     # This raises ZeroDivisionError when i == 10.
-    for i in range(0, 11):
-        v = i-10
-        stdscr.addstr(i, 0, '10 divided by {} is {}'.format(v, 10/v))
 
+    vidObj = cv2.VideoCapture("Bad Apple.mp4")
+
+    # Used as counter variable
+    count = 0
+
+    # checks whether frames were extracted
+    success = 1
+
+    fps = vidObj.get(cv2.CAP_PROP_FPS)
+
+    
+    while success:
+        width  = vidObj.get(3)  # float `width`
+        height = vidObj.get(4)  # float `height`
+        ## print(width, height)
+        # vidObj object calls read
+        # function extract frames
+        success, image = vidObj.read()
+
+        # Saves the frames with frame-count
+        
+        if True:
+            for i in range(90):
+                for j in range(120):
+                    if (image[i*4][j*4] == numpy.array([255,255,255])).all():
+                        stdscr.addstr(i,j*2,"##")
+                        
+                    else:
+                        stdscr.addstr(i,j*2,"  ")
+
+        # print(type(image[0][0]))
+        curses.delay_output(int(100/fps))
         stdscr.refresh()
-        stdscr.getkey()
+        # print(count)
+        count += 1
 
 # wrapper(main)
 
+main()
 # Function to extract frames
 def FrameCapture(path):
 
@@ -63,4 +96,4 @@ def FrameCapture(path):
 if __name__ == '__main__':
     pass
     # Calling the function
-    FrameCapture("Bad Apple.mp4")
+    # FrameCapture("Bad Apple.mp4")
