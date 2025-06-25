@@ -7,14 +7,20 @@ from datetime import datetime
 
 from curses import wrapper
 
+# brscl = "`.-':_,^=;><+!rc*/z?sLTv)J7(|Fi{C}fI31tlu[neoZ5Yxjya]2ESwqkP6h9d4VpOGbUAKXHm8RD#$Bg0MNWQ%&@"
+brscl = " -:=;><+!rc/z?sLTv)J7(|Fi{C}fI31tlu[neoZ5Yxjya]2ESwqkP6h9d4VpOGbUAKXHm8RD#$Bg0MNWQ%&@"
+bl = len(brscl) - 1
 def main():
     print("START")
-    stdscr = curses.initscr()
+    
+    play = True
+
+    if play: stdscr = curses.initscr()
     # Clear screen
-    stdscr.clear()
+    if play: stdscr.clear()
 
     # curses.nocbreak()
-    curses.noecho()
+    if play: curses.noecho()
 
     # This raises ZeroDivisionError when i == 10.
 
@@ -36,7 +42,7 @@ def main():
 
     while success:
         
-        stdscr.refresh()
+        if play: stdscr.refresh()
         ## print(width, height)
         # vidObj object calls read
         # function extract frames
@@ -45,16 +51,22 @@ def main():
 
         # Saves the frames with frame-count
         
-        if True:
-            for i in range(90):
-                for j in range(120):
-                    if (image[i*4][j*4] == numpy.array([255,255,255])).all():
+        ratio = 4
+
+        if play:
+            for i in range(int(height/ratio)): # 90 120
+                for j in range(int(width/ratio)):
+                    """
+                    if (image[i*ratio][j*ratio] == numpy.array([255,255,255])).all():
                         stdscr.addstr(i,j*2,"##")
                         
                     else:
                         stdscr.addstr(i,j*2,"  ")
+                    """
+                    idx = bl/255 * image[i*ratio][j*ratio][0]
+                    stdscr.addstr(i,j*2,brscl[int(idx)]*2)
 
-        # print(type(image[0][0]))
+        # print(image[0][0][0] ,end=" ------- ")
         count += 1
 
         elp = datetime.now() - st
@@ -65,8 +77,8 @@ def main():
         diff = dft-elp
 
         print(dft, count, elp, diff)
-
-        curses.delay_output(max(0, -diff))
+        if play:  stdscr.addstr(int(height/ratio), 0, str(count))
+        if play: curses.delay_output(max(0, diff))
 
         
         
@@ -74,7 +86,6 @@ def main():
     exit()
 
 # wrapper(main)
-
 main()
 # Function to extract frames
 def FrameCapture(path):
