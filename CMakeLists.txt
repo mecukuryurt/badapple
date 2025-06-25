@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION .0)
+cmake_minimum_required(VERSION 4.0)
 project(badapple)
 
 find_package(OPENCV REQUIRED)
