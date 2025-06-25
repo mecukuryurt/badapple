@@ -32,10 +32,10 @@ def main():
     
     dldef = 1000 / fps
 
-    remnant = 0
+    st = datetime.now()
 
     while success:
-        st = datetime.now()
+        
         stdscr.refresh()
         ## print(width, height)
         # vidObj object calls read
@@ -55,21 +55,23 @@ def main():
                         stdscr.addstr(i,j*2,"  ")
 
         # print(type(image[0][0]))
-        
-        end = datetime.now()
-        elp = end-st
-        elp = elp.microseconds/1000
-        if (elp > dldef): remnant += -int(dldef - elp)
-        
-        print(int(dldef-elp), elp, remnant)
         count += 1
+
+        elp = datetime.now() - st
+        elp = (elp.microseconds // 1000) + elp.seconds * 1000
+
+        dft = int(count * dldef)
+
+        diff = dft-elp
+
+        print(dft, count, elp, diff)
+
+        curses.delay_output(max(0, -diff))
+
         
-        curses.delay_output(max(0,int(dldef-elp - 4*(remnant>0) - 2.5)))
-        
-        if (remnant > 0 and int(dldef-elp - 4*(remnant>0)) > 0): remnant-=4
         
         # print(count)
-        
+    exit()
 
 # wrapper(main)
 
