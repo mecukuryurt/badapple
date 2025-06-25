@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 4.0)
 project(badapple)
 
-find_package(OPENCV REQUIRED)
+find_package(OpenCV REQUIRED PATHS C:\\opencv NO_DEFAULT_PATH)
 
 include_directories(${OPENCV_INCLUDE_DIRS})
 
